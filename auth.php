@@ -29,7 +29,8 @@ if(isset($_POST)) {
     if($auth->attempt(['email' => $email, 'password' => $password], $remember)) {
       return header("Location: ./dashboard");
     } else {
-      $_SESSION['errors'] = "Woops, email or password isn't valid or not found on our records! Recheck again your credential before continue!";
+      $_SESSION['errors'] = ["Woops, email or password isn't valid or not found on our records! Recheck again your credential before continue!"];
+      return header("Location: ./login.php");
     }
   } else {
     $_SESSION['errors'] = $validator->getErrors();

@@ -59,17 +59,21 @@ class Auth
    */
   public static function getUser() 
   {
-    // Get Token
-    $token = isset($_COOKIE['remember_token']);
-    $id    = isset($_COOKIE['user_id']);
+    $user = null;
+    
+    if(isset($_COOKIE['user_id']) OR isset($_COOKIE['remember_token'])) {
+      // Get Token
+      $token = $_COOKIE['remember_token'];
+      $id    = $_COOKIE['user_id'];
 
-    // Retrieve user details from the database
-    $stmt = self::$db->prepare("SELECT * FROM users WHERE id = ? OR remember_token = ?");
-    $stmt->bind_param("ss", $id, $token);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $user   = $result->fetch_assoc();
-    $stmt->close();
+      // Retrieve user details from the database
+      $stmt = self::$db->prepare("SELECT * FROM users WHERE id = ? OR remember_token = ?");
+      $stmt->bind_param("ss", $id, $token);
+      $stmt->execute();
+      $result = $stmt->get_result();
+      $user   = $result->fetch_assoc();
+      $stmt->close();
+    }
 
     return $user;
   }

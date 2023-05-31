@@ -40,7 +40,7 @@ class DBConnection
    * @version 1.0.0
    * @author Cak Adi <cakadi190@gmail.com>
    */
-  public function getConnection() 
+  public function getConnection()
   {
     return $this->connection;
   }
@@ -67,12 +67,50 @@ class DBConnection
 
     // Run and check if is successfully inserted or not
     if ($stmt->execute()) {
-      echo "Data inserted successfully!";
+      return true;
     } else {
-      echo "Error inserting data: " . $stmt->error;
+      return "Error inserting data: " . $stmt->error;
     }
 
     // Don't forget Close connection
+    $stmt->close();
+  }
+
+  /**
+   * The update query
+   *
+   * @author Cak Adi <cakadi190@gmail.com>
+   * @since 1.0.0
+   * @version 1.0.0
+   * @param string $table The table name to update data
+   * @param string[] $data The data with key column to update
+   * @param string $condition The condition for the update query
+   */
+  public function update($table, $data, $condition)
+  {
+    // Prepare the SET clause
+    $setClause = "";
+    foreach ($data as $column => $value) {
+      $setClause .= "$column = ?, ";
+    }
+    $setClause = rtrim($setClause, ", ");
+
+    // Prepare the UPDATE query
+    $stmt = $this->connection->prepare("UPDATE $table SET $setClause WHERE $condition");
+
+    // Bind the values
+    $types = str_repeat("s", count($data));
+    $values = array_values($data);
+    $stmt->bind_param($types, ...$values);
+
+    // Run and check if the update was successful or not
+    if ($stmt->execute()) {
+      return true;
+    } else {
+      return "Error inserting data: " . $stmt->error;
+    }
+
+    // Close the statement
     $stmt->close();
   }
 }

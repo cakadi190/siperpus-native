@@ -1,78 +1,105 @@
 <?php
 
-use Inc\Template;
-
 require_once __DIR__ . '/inc/include.php';
 
 // The middleware
-if($auth->getUser()) {
+if ($auth->getUser()) {
   return header("Location: ./dashboard");
-} 
+}
 ?><!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
+  <base href="https://<?= $_SERVER['SERVER_NAME'] ?>/panel-assets/" />
+  <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Authentication - Siperpus</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
 
-  <?=Template::getCSS(); ?>
-  <?=Template::getJS(true); ?>
+  <title>Login - Siperpus</title>
+
+  <!-- Custom fonts for this template-->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+  <!-- Custom styles for this template-->
+  <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
 </head>
-<body class="bg-light align-items-center justify-content-center">
+
+<body class="bg-gradient-primary d-flex align-items-center">
+
   <div class="container">
-    <div class="row min-vh-100 align-items-center justify-content-center">
-      <div class="col-md-5">
-        <div class="card shadow border-0">
-          <h5 class="card-header py-3 bg-white">Hello Stranger!</h5>
-          <div class="card-body">
-            <p>Please enter your credential to continue.</p>
 
-            <?php if(isset($_SESSION['errors'])) : ?>
-            <div class="alert alert-danger">
-              <h5>Warning!</h5>
-              <ul class="mb-0">
-                <?php foreach($_SESSION['errors'] as $error) : ?>
-                <li><?=$error; ?></li>
-                <?php endforeach; ?>
-              </ul>
+    <!-- Outer Row -->
+    <div class="row justify-content-center min-vh-100 align-items-center">
+
+      <div class="col-xl-10 col-lg-12 col-md-9">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+          <div class="card-body p-0">
+            <!-- Nested Row within Card Body -->
+            <div class="row">
+              <div class="col-lg-6 d-none d-lg-block bg-login-image" style="background: url('https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=628&q=80') no-repeat center center;"></div>
+              <div class="col-lg-6">
+                <div class="p-5">
+
+                  <?php if(isset($_SESSION['errors'])) : ?>
+                  <div class="alert alert-danger">
+                    <h5>Warning!</h5>
+                    <ul class="mb-0">
+                      <?php foreach($_SESSION['errors'] as $error) : ?>
+                      <li><?=$error; ?></li>
+                      <?php endforeach; ?>
+                    </ul>
+                  </div>
+                  <?php endif; ?>
+
+                  <div class="text-center">
+                    <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                  </div>
+                  <form class="user" action="https://<?= $_SERVER['SERVER_NAME'] ?>/auth.php" method="POST">
+                    <div class="form-group">
+                      <input type="email" class="form-control form-control-user" placeholder="admin@gmail.com" id="email" name="email" />
+                    </div>
+                    <div class="form-group">
+                      <input type="password" class="form-control form-control-user" placeholder="Your Password" id="password" name="password" />
+                    </div>
+                    <div class="form-group">
+                      <div class="custom-control custom-checkbox small">
+                        <input type="checkbox" class="custom-control-input" id="remember" value="true" name="remember" />
+                        <label class="custom-control-label" for="remember">Remember Me</label>
+                      </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-user btn-block">Login</button>
+                  </form>
+                  <hr>
+                  <div class="text-center">
+                    <a class="small" href="https://<?= $_SERVER['SERVER_NAME'] ?>/register.php">Create an Account!</a>
+                  </div>
+                </div>
+              </div>
             </div>
-            <?php endif; ?>
-
-            <form action="./auth.php" method="POST" class="pt-2">
-
-              <!-- Form Email -->
-              <div class="form-group mb-3">
-                <div class="form-floating">
-                  <input type="email" class="form-control" placeholder="admin@gmail.com" id="email" name="email" />
-                  <label for="email">Email address</label>
-                </div>
-              </div>
-              
-              <!-- Form Password -->
-              <div class="form-group mb-3">
-                <div class="form-floating">
-                  <input type="password" class="form-control" placeholder="admin@gmail.com" id="password" name="password" />
-                  <label for="password">Your Password</label>
-                </div>
-              </div>
-
-              <div class="d-flex justify-content-between align-items-center">
-                <!-- Form Checkbox -->
-                <div class="form-check">
-                  <input type="checkbox" class="form-check-input" value="true" id="remember" name="remember" />
-                  <label for="remember" class="form-check-label">Remember Me</label>
-                </div>
-
-                <!-- Submission button -->
-                <button type="submit" class="btn btn-primary">Login</button>
-              </div>
-              
-            </form>
           </div>
         </div>
+
       </div>
+
     </div>
+
   </div>
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="js/sb-admin-2.min.js"></script>
+
 </body>
+
 </html>
